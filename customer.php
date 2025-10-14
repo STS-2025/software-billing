@@ -159,15 +159,27 @@ body {
     margin-top: 5px;
     display: block;
 }
+.table-responsive {
+    max-height: 200px; /* adjust if row height differs */
+    overflow-y: auto;
+}
+.btn-primary {
+    background-color: #140d77;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #1a0f99;
+}
+
 </style>
-
-
-<div class="text-center my-4">
-    <h2 class="product-heading fw-bold">
+<div class="d-flex justify-content-between align-items-center my-4 px-3">
+    <button onclick="window.location.href='add_customer.php'" class="btn btn-primary btn-glow">
+        <i class="fa fa-plus"></i> Add customer
+    </button>
+    <h2 class="product-heading fw-bold text-center flex-grow-1 m-0">
         Customer Management
     </h2>
 </div>
-
 
 <?php if ($message): ?>
     <div class="alert alert-info"><?= $message ?></div>
@@ -179,9 +191,8 @@ body {
         <h4 class="glow-heading mb-3">Existing Customers</h4>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover">
-                <thead>
+                <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>Phone</th>
@@ -193,7 +204,6 @@ body {
                 <?php if (!empty($customers)): ?>
                     <?php foreach ($customers as $c): ?>
                     <tr>
-                        <td><?= $c['customer_id'] ?></td>
                         <td><?= htmlspecialchars($c['customer_name']) ?></td>
                         <td><?= htmlspecialchars($c['address']) ?></td>
                         <td><?= htmlspecialchars($c['phone']) ?></td>
@@ -212,36 +222,6 @@ body {
             </table>
         </div>
     </div>
-
-    <!-- Customer Entry Form -->
-    <div class="form-card">
-        <h4 class="glow-heading mb-3">Add Customer</h4>
-        <form method="post" onsubmit="return validatePhone()" id="customerForm">
-            <div class="mb-3">
-                <label class="form-label">Customer Name</label>
-                <input type="text" name="customer_name" id="customer_name" class="form-control" required autocomplete="off">
-                <span id="name_error"></span>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Phone</label>
-                <input type="text" name="phone" id="phone" class="form-control"
-                       maxlength="10" pattern="[0-9]{10}" required
-                       placeholder="Enter 10-digit phone no">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Address</label>
-                <textarea name="address" class="form-control"></textarea>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success btn-glow" id="saveBtn">Save Customer</button>
-            <a href="dashboard.php" class="btn btn-secondary btn-glow">Back</a>
-        </form>
-    </div>
-</div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
