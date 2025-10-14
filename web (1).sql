@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 09, 2025 at 07:58 AM
+-- Generation Time: Oct 14, 2025 at 07:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `web`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `adminlist`
+--
+
+CREATE TABLE `adminlist` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `role` enum('Admin','User') DEFAULT 'User',
+  `status` enum('Active','Inactive') DEFAULT 'Active',
+  `company` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `adminlist`
+--
+
+INSERT INTO `adminlist` (`id`, `username`, `email`, `role`, `status`, `company`, `password`) VALUES
+(2, 'vennila', 'vennila@gmail.com', 'User', 'Active', 'Samudhra Tech Solutions', '$2y$10$Sso2qgyzC/ZUHGhDkv5IOui.r3NotKsG6I38YQ7o3bPuwff0csS/S'),
+(3, 'Priya', 'priya@gmail.com', 'User', 'Active', 'Samudhra Tech Solutions', '$2y$10$6hZ57xhaqb2jmf4lgUb.OeW1WHjZCyJzts18x7Y/Jd0akCyQ8juke');
 
 -- --------------------------------------------------------
 
@@ -171,14 +195,14 @@ INSERT INTO `products` (`product_id`, `category_id`, `product_name`, `category`,
 (2, 1, 'Book', 'Stationery', 30.00, 5.00, 5.00, '', 104.00, 0.00, 0.00),
 (3, 1, 'Pen', 'Stationery', 50.00, 5.00, 10.00, '', 66.00, 0.00, 0.00),
 (4, 1, 'Pencil', 'Stationery', 5.00, 2.00, 2.00, NULL, NULL, NULL, NULL),
-(5, 2, 'DEll', 'Electronics', 50000.00, 10.00, 18.00, '', 9.00, 0.00, 0.00),
+(5, 2, 'DEll', 'Electronics', 50000.00, 10.00, 18.00, '', 0.00, 0.00, 0.00),
 (6, 2, 'Mouse', 'Electronics', 500.00, 5.00, 10.00, '', 26.00, 0.00, 0.00),
 (8, NULL, 'wood bed', 'Furnitures', 25000.00, 15.00, 14.95, '', 100.00, 23000.00, 55.00),
 (9, NULL, 'Milk', 'Grocery', 20.00, 5.00, 5.00, '', 55.00, 14.98, 0.00),
 (58, NULL, 'Kids wear', 'Dress', 500.00, 2.00, 5.00, '2', 100.00, 400.00, 5.00),
 (59, NULL, 'Chudi', 'Dress', 800.00, 2.00, 5.00, '3', 500.00, 500.00, 5.00),
 (60, NULL, 'Apple', 'Fruits', 300.00, 2.00, 5.00, '1', 200.00, 250.00, 5.00),
-(61, NULL, 'Banana', 'Fruits', 100.00, 2.00, 5.00, '2', 200.00, 80.00, 5.00);
+(61, NULL, 'orange', 'Fruits', 100.00, 2.00, 5.00, '2', 200.00, 80.00, 5.00);
 
 -- --------------------------------------------------------
 
@@ -223,7 +247,8 @@ INSERT INTO `purchase_invoices` (`pi_id`, `pi_number`, `pi_date`, `due_date`, `s
 (30, 'PI/25-26/0016', '2025-08-01', '2025-10-05', 5, NULL, '7869', '', '', 'Inclusive', '2025-10-07 07:35:06'),
 (31, 'PI/25-26/0017', '2025-09-11', '2025-10-15', 5, NULL, '567', '', '', 'Inclusive', '2025-10-07 07:41:12'),
 (32, 'PI/25-26/0018', '2025-09-30', '2025-10-02', 3, NULL, '789', '', '', 'Inclusive', '2025-10-07 07:43:36'),
-(33, 'PI/25-26/0019', '2025-09-29', '2025-10-01', 2, NULL, '788', '', '', 'Inclusive', '2025-10-07 07:45:01');
+(33, 'PI/25-26/0019', '2025-09-29', '2025-10-01', 2, NULL, '788', '', '', 'Inclusive', '2025-10-07 07:45:01'),
+(35, 'PI/25-26/0020', '2025-10-02', '2025-10-04', 3, NULL, '678', '', '', 'Inclusive', '2025-10-09 06:09:00');
 
 -- --------------------------------------------------------
 
@@ -269,7 +294,8 @@ INSERT INTO `purchase_invoice_items` (`id`, `pi_id`, `category`, `product_name`,
 (28, 30, 'Furnitures', 'wood bed', 1.00, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
 (29, 31, 'Grocery', 'Milk', 1.00, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
 (30, 32, 'Grocery', 'Milk', 1.00, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(31, 33, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive');
+(31, 33, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
+(33, 35, 'Electronics', 'DEll', 1.00, 50000.00, 10.00, 18.00, 45000.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -426,7 +452,8 @@ INSERT INTO `sales_invoices` (`si_id`, `si_number`, `si_date`, `due_date`, `cust
 (12, 'SI/25-26/0010', '2025-10-01', '2025-10-04', 2, '56', '', 'Inclusive', '', NULL, '2025-10-07 10:29:16', '2025-10-07 10:29:16'),
 (13, 'SI/25-26/0011', '2025-10-01', '2025-10-07', 1, '567', '', 'Inclusive', '', NULL, '2025-10-07 10:34:09', '2025-10-07 10:34:09'),
 (14, 'SI/25-26/0012', '2025-10-01', '2025-10-05', 1, '78', '', 'Inclusive', '', NULL, '2025-10-07 10:43:41', '2025-10-07 10:43:41'),
-(17, 'SI/25-26/0013', '2025-10-02', '2025-10-05', 2, '789', '', 'Inclusive', '', NULL, '2025-10-08 05:17:36', '2025-10-08 05:17:36');
+(17, 'SI/25-26/0013', '2025-10-02', '2025-10-05', 2, '789', '', 'Inclusive', '', NULL, '2025-10-08 05:17:36', '2025-10-08 05:17:36'),
+(19, 'SI/25-26/0014', '2025-10-05', '2025-10-07', 1, '678', '', 'Inclusive', '', 19, '2025-10-09 06:11:25', '2025-10-09 06:11:25');
 
 -- --------------------------------------------------------
 
@@ -460,7 +487,8 @@ INSERT INTO `sales_invoice_items` (`sii_id`, `si_id`, `category`, `product_name`
 (11, 12, 'Grocery', 'Milk', 1, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
 (12, 13, 'Furnitures', 'wood bed', 1, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
 (13, 14, 'Grocery', 'Milk', 1, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(15, 17, 'Furnitures', 'wood bed', 1, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive');
+(15, 17, 'Furnitures', 'wood bed', 1, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
+(17, 19, 'Electronics', 'DEll', 5, 50000.00, 10.00, 18.00, 225000.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -486,7 +514,8 @@ CREATE TABLE `sales_orders` (
 
 INSERT INTO `sales_orders` (`so_id`, `so_number`, `so_date`, `customer_id`, `delivery_date`, `customer_bill_no`, `notes`, `tax_mode`, `terms`) VALUES
 (13, 'SO/25-26/0001', '2025-09-01', 1, '2025-09-25', 'ORG/25-26/01', '', 'Inclusive', ''),
-(18, 'SO/25-26/0006', '2025-09-29', 2, '2025-10-01', 'ORG/009', '', 'Inclusive', '');
+(18, 'SO/25-26/0006', '2025-09-29', 2, '2025-10-01', 'ORG/009', '', 'Inclusive', ''),
+(19, 'SO/25-26/0007', '2025-10-05', 1, '2025-10-07', NULL, '', 'Inclusive', '');
 
 -- --------------------------------------------------------
 
@@ -513,7 +542,8 @@ CREATE TABLE `sales_order_items` (
 
 INSERT INTO `sales_order_items` (`item_id`, `so_id`, `quantity`, `rate`, `discount`, `gst`, `line_total`, `tax_mode`, `category`, `product_name`) VALUES
 (6, 13, 1.00, 25000.00, 5.00, 14.95, 23750.00, 'Inclusive', 'Furnitures', 'wood bed'),
-(10, 18, 20.00, 5.00, 2.00, 2.00, 98.00, 'Inclusive', 'Stationery', 'Pencil');
+(10, 18, 20.00, 5.00, 2.00, 2.00, 98.00, 'Inclusive', 'Stationery', 'Pencil'),
+(11, 19, 5.00, 50000.00, 10.00, 18.00, 225000.00, 'Inclusive', 'Electronics', 'DEll');
 
 -- --------------------------------------------------------
 
@@ -612,23 +642,30 @@ INSERT INTO `suppliers` (`supplier_id`, `ledger_id`, `supplier_name`, `address`,
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `role` varchar(10) NOT NULL DEFAULT 'User',
+  `company` varchar(255) DEFAULT 'N/A'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`) VALUES
-(1, 'Admin', 'admin@example.com', '$2y$10$vfiH49bXy/8f8wN4Qva8v.ih7nlDMeJC9umMQcq77.OEuZMfrXa.C', '2025-10-01 05:33:08'),
-(2, 'Abi', 'user@example.com', '$2y$10$53KoZjEd1.JTRPl2OPK7cuayKXRN3ekWw/D.KF8HDHBG.p5si1g9K', '2025-10-08 14:15:01');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`, `role`, `company`) VALUES
+(11, 'Abhi', 'abhi@gmail.com', '$2y$10$mDUU7w0.bKro.jutnjF34.nMGxEBSU7RybS8oV6tJugZEsO8Pkjt2', '2025-10-13 07:31:02', 'Admin', 'Samudhra Tech Solutions');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `adminlist`
+--
+ALTER TABLE `adminlist`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `categories`
@@ -776,6 +813,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `adminlist`
+--
+ALTER TABLE `adminlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -785,7 +828,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `ledgers`
@@ -815,13 +858,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `purchase_invoices`
 --
 ALTER TABLE `purchase_invoices`
-  MODIFY `pi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `pi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `purchase_invoice_items`
 --
 ALTER TABLE `purchase_invoice_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `purchase_orders`
@@ -851,25 +894,25 @@ ALTER TABLE `purchase_return_items`
 -- AUTO_INCREMENT for table `sales_invoices`
 --
 ALTER TABLE `sales_invoices`
-  MODIFY `si_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `si_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `sales_invoice_items`
 --
 ALTER TABLE `sales_invoice_items`
-  MODIFY `sii_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `sii_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `sales_orders`
 --
 ALTER TABLE `sales_orders`
-  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `sales_order_items`
 --
 ALTER TABLE `sales_order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `sales_returns`
@@ -893,7 +936,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
