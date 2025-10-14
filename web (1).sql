@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2025 at 07:54 AM
+-- Generation Time: Oct 14, 2025 at 12:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -42,7 +42,7 @@ CREATE TABLE `adminlist` (
 --
 
 INSERT INTO `adminlist` (`id`, `username`, `email`, `role`, `status`, `company`, `password`) VALUES
-(2, 'vennila', 'vennila@gmail.com', 'User', 'Active', 'Samudhra Tech Solutions', '$2y$10$Sso2qgyzC/ZUHGhDkv5IOui.r3NotKsG6I38YQ7o3bPuwff0csS/S'),
+(2, 'vennila', 'vennila@gmail.com', 'User', 'Active', '', '$2y$10$Sso2qgyzC/ZUHGhDkv5IOui.r3NotKsG6I38YQ7o3bPuwff0csS/S'),
 (3, 'Priya', 'priya@gmail.com', 'User', 'Active', 'Samudhra Tech Solutions', '$2y$10$6hZ57xhaqb2jmf4lgUb.OeW1WHjZCyJzts18x7Y/Jd0akCyQ8juke');
 
 -- --------------------------------------------------------
@@ -77,9 +77,21 @@ INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 CREATE TABLE `customers` (
   `customer_id` int(11) NOT NULL,
   `customer_name` varchar(100) NOT NULL,
+  `company_name` varchar(100) DEFAULT NULL,
   `address` text DEFAULT NULL,
+  `country` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `zipcode` varchar(10) NOT NULL,
+  `ship_address` text DEFAULT NULL,
+  `ship_country` varchar(50) DEFAULT NULL,
+  `ship_city` varchar(50) DEFAULT NULL,
+  `ship_state` varchar(50) DEFAULT NULL,
+  `ship_zipcode` varchar(10) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `gstin` varchar(20) NOT NULL,
+  `pan` varchar(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -87,9 +99,13 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customer_id`, `customer_name`, `address`, `phone`, `email`, `created_at`) VALUES
-(1, 'Libina', '24B sathiram bus stand,thoothukudi,TamilNadu', '9025062327', 'libina@gmail.com', '2025-09-24 14:27:07'),
-(2, 'samudhra', 'kpl, tuty tamilnadu', '98765445678', 'kal@gamil.com', '2025-09-29 06:26:49');
+INSERT INTO `customers` (`customer_id`, `customer_name`, `company_name`, `address`, `country`, `city`, `state`, `zipcode`, `ship_address`, `ship_country`, `ship_city`, `ship_state`, `ship_zipcode`, `phone`, `email`, `gstin`, `pan`, `created_at`) VALUES
+(1, 'Libina', NULL, '24B sathiram bus stand,thoothukudi,TamilNadu', NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '9025062327', 'libina@gmail.com', '', NULL, '2025-09-24 14:27:07'),
+(2, 'samudhra', NULL, 'kpl, tuty tamilnadu', NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '98765445678', 'kal@gamil.com', '', NULL, '2025-09-29 06:26:49'),
+(4, 'Abi', NULL, '2/17 thoothukudi', NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '9878967895', 'abi@gmail.com', '', NULL, '2025-10-14 07:11:41'),
+(5, 'nila', 'STS', '178 a thoothukudi', 'India', 'thoothukudi', 'tamil.nadu', '628001', NULL, NULL, NULL, NULL, NULL, '8946787846', 'nila@gmail.com', '8F977FG5678', 'AAAPA1234A', '2025-10-14 10:02:31'),
+(8, 'devi', 'STS', '145 Thoothukudi', 'India', 'Thoothukudi', 'Tamilnadu', '628001', '145 old bus stand thoothukudi', 'india', 'Thoothukdi', 'tamilnadu', '628001', '7890384873', 'devi@gmail.com', '56FG6374687', 'AAAA765', '2025-10-14 10:19:11'),
+(13, 'priya', 'STS', '45 Gandhi nagar', 'India', 'Thoothukudi', 'Tamilnadu', '628001', '45 Gandhi nagar', 'India', 'Thoothukudi', 'Tamilnadu', '628001', '7894758956', 'priya@gmail.com', '67GB788746', 'AAAA7883', '2025-10-14 10:26:19');
 
 -- --------------------------------------------------------
 
@@ -327,7 +343,8 @@ INSERT INTO `purchase_orders` (`po_id`, `po_number`, `po_date`, `expected_date`,
 (80, 'PO/25-26/0035', '2025-09-08', '2025-09-11', 6, 'ORG/005', '', '', 0.00, 'Inclusive'),
 (81, 'PO/25-26/0036', '2025-10-07', '2025-10-11', 6, 'ORG/002', '', '', 0.00, 'Inclusive'),
 (82, 'PO/25-26/0037', '2025-10-02', '2025-10-04', 4, 'ORG/003', '', '', 0.00, 'Inclusive'),
-(85, 'PO/25-26/0038', '2025-10-01', '0000-00-00', 1, '', '', '', 1568.00, 'Inclusive');
+(85, 'PO/25-26/0038', '2025-10-01', '0000-00-00', 1, '', '', '', 1568.00, 'Inclusive'),
+(86, 'PO/25-26/0039', '2025-10-01', '2025-10-08', 1, '7895', '', '', 784.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -360,7 +377,8 @@ INSERT INTO `purchase_order_items` (`item_id`, `po_id`, `category`, `product_nam
 (59, 81, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
 (60, 81, 'Stationery', 'Pencil', 50.00, 5.00, 2.00, 2.00, 245.00, 'Inclusive'),
 (61, 82, 'Furnitures', 'wood bed', 1.00, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
-(64, 85, 'Dress', 'Chudi', 2.00, 800.00, 2.00, 5.00, 1568.00, 'Inclusive');
+(64, 85, 'Dress', 'Chudi', 2.00, 800.00, 2.00, 5.00, 1568.00, 'Inclusive'),
+(65, 86, 'Dress', 'Chudi', 1.00, 800.00, 2.00, 5.00, 784.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -828,7 +846,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `ledgers`
@@ -870,13 +888,13 @@ ALTER TABLE `purchase_invoice_items`
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
-  MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `purchase_order_items`
 --
 ALTER TABLE `purchase_order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `purchase_returns`
