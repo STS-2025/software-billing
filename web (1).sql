@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2025 at 12:34 PM
+-- Generation Time: Oct 15, 2025 at 07:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -67,6 +67,38 @@ INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 (4, 'Furnitures'),
 (3, 'Grocery'),
 (1, 'Stationery');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company_settings`
+--
+
+CREATE TABLE `company_settings` (
+  `id` int(11) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
+  `company_logo_path` varchar(255) DEFAULT NULL,
+  `address_line_1` varchar(150) NOT NULL,
+  `address_line_2` varchar(150) DEFAULT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL,
+  `pincode` varchar(10) NOT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `email_address` varchar(100) DEFAULT NULL,
+  `website` varchar(100) DEFAULT NULL,
+  `gstin` varchar(15) NOT NULL,
+  `pan_number` varchar(10) DEFAULT NULL,
+  `bank_name` varchar(100) DEFAULT NULL,
+  `account_number` varchar(50) DEFAULT NULL,
+  `ifsc_code` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `company_settings`
+--
+
+INSERT INTO `company_settings` (`id`, `company_name`, `company_logo_path`, `address_line_1`, `address_line_2`, `city`, `state`, `pincode`, `phone_number`, `email_address`, `website`, `gstin`, `pan_number`, `bank_name`, `account_number`, `ifsc_code`) VALUES
+(1, 'Samudhra Tech Solutions', '/assets/img/logo.png', '1/433x,Muthammal Colony', '3rd Street', 'THOOTHUKUDI', 'TAMIL NADU', '628002', '9990001111', 'support@samudhratechsolutions.com', NULL, '33AAAAA0000A1Z5', 'ABCDE1234F', 'HDFC Bank', '50100123456789', 'HDFC0000005');
 
 -- --------------------------------------------------------
 
@@ -693,6 +725,13 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `category_name` (`category_name`);
 
 --
+-- Indexes for table `company_settings`
+--
+ALTER TABLE `company_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `gstin` (`gstin`);
+
+--
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
@@ -841,6 +880,12 @@ ALTER TABLE `adminlist`
 --
 ALTER TABLE `categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+
+--
+-- AUTO_INCREMENT for table `company_settings`
+--
+ALTER TABLE `company_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
