@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2025 at 07:15 AM
+-- Generation Time: Oct 15, 2025 at 12:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -240,17 +240,17 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`product_id`, `category_id`, `product_name`, `category`, `rate`, `discount`, `gst`, `hsn_code`, `stock_quantity`, `mrp`, `reorder_level`) VALUES
 (1, 1, 'Note', 'Stationery', 45.00, 5.00, 10.00, '', 110.00, 0.00, 0.00),
-(2, 1, 'Book', 'Stationery', 30.00, 5.00, 5.00, '', 104.00, 0.00, 0.00),
+(2, 1, 'Book', 'Stationery', 30.00, 5.00, 5.00, '', 86.00, 0.00, 0.00),
 (3, 1, 'Pen', 'Stationery', 50.00, 5.00, 10.00, '', 66.00, 0.00, 0.00),
 (4, 1, 'Pencil', 'Stationery', 5.00, 2.00, 2.00, NULL, NULL, NULL, NULL),
-(5, 2, 'DEll', 'Electronics', 50000.00, 10.00, 18.00, '', 0.00, 0.00, 0.00),
-(6, 2, 'Mouse', 'Electronics', 500.00, 5.00, 10.00, '', 26.00, 0.00, 0.00),
-(8, NULL, 'wood bed', 'Furnitures', 25000.00, 15.00, 14.95, '', 100.00, 23000.00, 55.00),
-(9, NULL, 'Milk', 'Grocery', 20.00, 5.00, 5.00, '', 55.00, 14.98, 0.00),
+(5, 2, 'DEll', 'Electronics', 50000.00, 10.00, 18.00, '', -2.00, 0.00, 0.00),
+(6, 2, 'Mouse', 'Electronics', 500.00, 5.00, 10.00, '', 31.00, 0.00, 0.00),
+(8, NULL, 'wood bed', 'Furnitures', 25000.00, 15.00, 14.95, '', 97.00, 23000.00, 55.00),
+(9, NULL, 'Milk', 'Grocery', 20.00, 5.00, 5.00, '', 65.00, 14.98, 0.00),
 (58, NULL, 'Kids wear', 'Dress', 500.00, 2.00, 5.00, '2', 100.00, 400.00, 5.00),
-(59, NULL, 'Chudi', 'Dress', 800.00, 2.00, 5.00, '3', 500.00, 500.00, 5.00),
-(60, NULL, 'Apple', 'Fruits', 300.00, 2.00, 5.00, '1', 200.00, 250.00, 5.00),
-(61, NULL, 'orange', 'Fruits', 100.00, 2.00, 5.00, '2', 200.00, 80.00, 5.00);
+(59, NULL, 'Chudi', 'Dress', 800.00, 2.00, 5.00, '3', 498.00, 500.00, 5.00),
+(60, NULL, 'Apple', 'Fruits', 300.00, 2.00, 5.00, '1', 185.00, 250.00, 5.00),
+(61, NULL, 'orange', 'Fruits', 100.00, 2.00, 5.00, '2', 199.00, 80.00, 5.00);
 
 -- --------------------------------------------------------
 
@@ -269,6 +269,7 @@ CREATE TABLE `purchase_invoices` (
   `notes` text DEFAULT NULL,
   `terms` text DEFAULT NULL,
   `tax_mode` enum('Inclusive','Exclusive') DEFAULT 'Inclusive',
+  `grand_total` decimal(12,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -276,27 +277,11 @@ CREATE TABLE `purchase_invoices` (
 -- Dumping data for table `purchase_invoices`
 --
 
-INSERT INTO `purchase_invoices` (`pi_id`, `pi_number`, `pi_date`, `due_date`, `supplier_id`, `po_id`, `supplier_bill_no`, `notes`, `terms`, `tax_mode`, `created_at`) VALUES
-(1, 'PI/25-26/0001', '2025-09-01', '2025-09-06', 3, NULL, 'ORG/PI/001', '', '', 'Inclusive', '2025-09-24 14:59:44'),
-(3, 'PI/25-26/0002', '2025-09-04', '2025-09-08', 4, NULL, 'ORG/-002', '', '', 'Inclusive', '2025-09-25 04:52:35'),
-(4, 'PI/25-26/0003', '2025-09-09', '2025-09-08', 5, NULL, '123', '', '', 'Inclusive', '2025-09-29 07:37:24'),
-(5, 'PI/25-26/0004', '2025-09-08', '2025-09-19', 2, NULL, '', '', '', 'Inclusive', '2025-09-29 08:20:35'),
-(6, 'PI/25-26/0005', '2025-09-04', '0000-00-00', 4, NULL, '', '', '', 'Inclusive', '2025-09-30 07:54:39'),
-(7, 'PI/25-26/0006', '2025-09-29', '2025-10-03', 6, NULL, 'ORG/002', '', '', 'Inclusive', '2025-10-03 07:41:26'),
-(9, 'PI/25-26/0007', '2025-10-01', '2025-10-04', 5, NULL, '567', '', '', 'Inclusive', '2025-10-07 06:01:20'),
-(10, 'PI/25-26/0008', '2025-09-29', '2025-10-05', 4, NULL, '67', '', '', 'Inclusive', '2025-10-07 06:02:56'),
-(11, 'PI/25-26/0009', '2025-10-06', '2025-10-11', 1, NULL, '345', '', '', 'Inclusive', '2025-10-07 06:15:01'),
-(12, 'PI/25-26/0010', '2025-09-29', '2025-10-01', 3, NULL, '789', '', '', 'Inclusive', '2025-10-07 06:29:07'),
-(13, 'PI/25-26/0011', '2025-10-01', '2025-10-05', 6, NULL, '345', '', '', 'Inclusive', '2025-10-07 06:32:25'),
-(14, 'PI/25-26/0012', '2025-09-02', '2025-09-11', 5, NULL, '234', '', '', 'Inclusive', '2025-10-07 06:44:12'),
-(15, 'PI/25-26/0013', '2025-10-01', '2025-10-03', 1, NULL, '567', '', '', 'Inclusive', '2025-10-07 06:53:13'),
-(28, 'PI/25-26/0014', '2025-10-01', '2025-10-02', 4, NULL, '677', '', '', 'Inclusive', '2025-10-07 06:57:30'),
-(29, 'PI/25-26/0015', '2025-10-01', '2025-10-04', 2, NULL, '567', '', '', 'Inclusive', '2025-10-07 07:24:15'),
-(30, 'PI/25-26/0016', '2025-08-01', '2025-10-05', 5, NULL, '7869', '', '', 'Inclusive', '2025-10-07 07:35:06'),
-(31, 'PI/25-26/0017', '2025-09-11', '2025-10-15', 5, NULL, '567', '', '', 'Inclusive', '2025-10-07 07:41:12'),
-(32, 'PI/25-26/0018', '2025-09-30', '2025-10-02', 3, NULL, '789', '', '', 'Inclusive', '2025-10-07 07:43:36'),
-(33, 'PI/25-26/0019', '2025-09-29', '2025-10-01', 2, NULL, '788', '', '', 'Inclusive', '2025-10-07 07:45:01'),
-(35, 'PI/25-26/0020', '2025-10-02', '2025-10-04', 3, NULL, '678', '', '', 'Inclusive', '2025-10-09 06:09:00');
+INSERT INTO `purchase_invoices` (`pi_id`, `pi_number`, `pi_date`, `due_date`, `supplier_id`, `po_id`, `supplier_bill_no`, `notes`, `terms`, `tax_mode`, `grand_total`, `created_at`) VALUES
+(1, 'PI/25-26/0001', '2025-09-01', '2025-09-06', 3, NULL, 'ORG/PI/001', '', '', 'Inclusive', 0.00, '2025-09-24 14:59:44'),
+(3, 'PI/25-26/0002', '2025-09-04', '2025-09-08', 4, NULL, 'ORG/-002', '', '', 'Inclusive', 0.00, '2025-09-25 04:52:35'),
+(4, 'PI/25-26/0003', '2025-09-09', '2025-09-08', 5, NULL, '123', '', '', 'Inclusive', 0.00, '2025-09-29 07:37:24'),
+(36, 'PI/25-26/0004', '2025-10-01', '2025-10-05', 4, NULL, '5677', '', '', 'Inclusive', 2565.00, '2025-10-15 10:33:54');
 
 -- --------------------------------------------------------
 
@@ -326,24 +311,8 @@ INSERT INTO `purchase_invoice_items` (`id`, `pi_id`, `category`, `product_name`,
 (10, 1, 'Electronics', 'Mouse', 2.00, 500.00, 5.00, 10.00, 950.00, 'Inclusive'),
 (12, 3, 'Grocery', 'Milk', 10.00, 20.00, 5.00, 5.00, 190.00, 'Inclusive'),
 (13, 4, 'Electronics', 'DEll', 1.00, 50000.00, 10.00, 16.00, 45000.00, 'Inclusive'),
-(14, 5, 'Furnitures', 'wood bed', 1.00, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
-(15, 6, 'Stationery', 'Book', 1.00, 30.00, 5.00, 5.00, 28.50, 'Inclusive'),
-(16, 7, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
-(17, 7, 'Stationery', 'Pencil', 50.00, 5.00, 2.00, 2.00, 245.00, 'Inclusive'),
-(19, 9, 'Stationery', 'Book', 2.00, 30.00, 5.00, 5.00, 57.00, 'Inclusive'),
-(20, 10, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
-(21, 11, 'Grocery', 'Milk', 10.00, 20.00, 5.00, 5.00, 190.00, 'Inclusive'),
-(22, 12, 'Stationery', 'Pen', 3.00, 50.00, 5.00, 10.00, 142.50, 'Inclusive'),
-(23, 13, 'Stationery', 'Book', 2.00, 30.00, 5.00, 5.00, 57.00, 'Inclusive'),
-(24, 14, 'Stationery', 'Pen', 5.00, 50.00, 5.00, 10.00, 237.50, 'Inclusive'),
-(25, 15, 'Electronics', 'Mouse', 1.00, 500.00, 5.00, 10.00, 475.00, 'Inclusive'),
-(26, 28, 'Electronics', 'DEll', 1.00, 50000.00, 10.00, 18.00, 45000.00, 'Inclusive'),
-(27, 29, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
-(28, 30, 'Furnitures', 'wood bed', 1.00, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
-(29, 31, 'Grocery', 'Milk', 1.00, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(30, 32, 'Grocery', 'Milk', 1.00, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(31, 33, 'Stationery', 'Pen', 1.00, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
-(33, 35, 'Electronics', 'DEll', 1.00, 50000.00, 10.00, 18.00, 45000.00, 'Inclusive');
+(34, 36, 'Electronics', 'Mouse', 5.00, 500.00, 5.00, 10.00, 2375.00, 'Inclusive'),
+(35, 36, 'Grocery', 'Milk', 10.00, 20.00, 5.00, 5.00, 190.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -376,7 +345,8 @@ INSERT INTO `purchase_orders` (`po_id`, `po_number`, `po_date`, `expected_date`,
 (81, 'PO/25-26/0036', '2025-10-07', '2025-10-11', 6, 'ORG/002', '', '', 0.00, 'Inclusive'),
 (82, 'PO/25-26/0037', '2025-10-02', '2025-10-04', 4, 'ORG/003', '', '', 0.00, 'Inclusive'),
 (85, 'PO/25-26/0038', '2025-10-01', '0000-00-00', 1, '', '', '', 1568.00, 'Inclusive'),
-(86, 'PO/25-26/0039', '2025-10-01', '2025-10-08', 1, '7895', '', '', 784.00, 'Inclusive');
+(86, 'PO/25-26/0039', '2025-10-01', '2025-10-08', 1, '7895', '', '', 784.00, 'Inclusive'),
+(87, 'PO/25-26/0040', '2025-10-02', '2025-10-03', 2, '678', '', '', 85784.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -410,7 +380,9 @@ INSERT INTO `purchase_order_items` (`item_id`, `po_id`, `category`, `product_nam
 (60, 81, 'Stationery', 'Pencil', 50.00, 5.00, 2.00, 2.00, 245.00, 'Inclusive'),
 (61, 82, 'Furnitures', 'wood bed', 1.00, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
 (64, 85, 'Dress', 'Chudi', 2.00, 800.00, 2.00, 5.00, 1568.00, 'Inclusive'),
-(65, 86, 'Dress', 'Chudi', 1.00, 800.00, 2.00, 5.00, 784.00, 'Inclusive');
+(65, 86, 'Dress', 'Chudi', 1.00, 800.00, 2.00, 5.00, 784.00, 'Inclusive'),
+(66, 87, 'Dress', 'Chudi', 1.00, 800.00, 2.00, 5.00, 784.00, 'Inclusive'),
+(67, 87, 'Furnitures', 'wood bed', 4.00, 25000.00, 15.00, 14.95, 85000.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -486,24 +458,19 @@ CREATE TABLE `sales_invoices` (
   `terms` text DEFAULT NULL,
   `so_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `grand_total` decimal(12,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sales_invoices`
 --
 
-INSERT INTO `sales_invoices` (`si_id`, `si_number`, `si_date`, `due_date`, `customer_id`, `customer_bill_no`, `notes`, `tax_mode`, `terms`, `so_id`, `created_at`, `updated_at`) VALUES
-(2, 'SI/25-26/0001', '2025-09-26', '2025-10-10', 1, 'ORG/25-26/01', '', 'Inclusive', '', 13, '2025-09-26 05:19:28', '2025-09-26 05:19:28'),
-(7, 'SI/25-26/0006', '2025-09-29', '2025-10-07', 2, '678', '', 'Inclusive', '', NULL, '2025-10-07 10:00:15', '2025-10-07 10:00:15'),
-(8, 'SI/25-26/0007', '2025-09-01', '2025-09-07', 2, '456', '', 'Inclusive', '', NULL, '2025-10-07 10:06:21', '2025-10-07 10:06:21'),
-(9, 'SI/25-26/0008', '2025-09-01', '2025-09-07', 1, '567', '', 'Inclusive', '', NULL, '2025-10-07 10:16:42', '2025-10-07 10:16:42'),
-(11, 'SI/25-26/0009', '2025-10-01', '2025-10-05', 2, '90', '', 'Inclusive', '', NULL, '2025-10-07 10:19:46', '2025-10-07 10:19:46'),
-(12, 'SI/25-26/0010', '2025-10-01', '2025-10-04', 2, '56', '', 'Inclusive', '', NULL, '2025-10-07 10:29:16', '2025-10-07 10:29:16'),
-(13, 'SI/25-26/0011', '2025-10-01', '2025-10-07', 1, '567', '', 'Inclusive', '', NULL, '2025-10-07 10:34:09', '2025-10-07 10:34:09'),
-(14, 'SI/25-26/0012', '2025-10-01', '2025-10-05', 1, '78', '', 'Inclusive', '', NULL, '2025-10-07 10:43:41', '2025-10-07 10:43:41'),
-(17, 'SI/25-26/0013', '2025-10-02', '2025-10-05', 2, '789', '', 'Inclusive', '', NULL, '2025-10-08 05:17:36', '2025-10-08 05:17:36'),
-(19, 'SI/25-26/0014', '2025-10-05', '2025-10-07', 1, '678', '', 'Inclusive', '', 19, '2025-10-09 06:11:25', '2025-10-09 06:11:25');
+INSERT INTO `sales_invoices` (`si_id`, `si_number`, `si_date`, `due_date`, `customer_id`, `customer_bill_no`, `notes`, `tax_mode`, `terms`, `so_id`, `created_at`, `updated_at`, `grand_total`) VALUES
+(2, 'SI/25-26/0001', '2025-09-26', '2025-10-10', 1, 'ORG/25-26/01', '', 'Inclusive', '', 13, '2025-09-26 05:19:28', '2025-09-26 05:19:28', 0.00),
+(7, 'SI/25-26/0006', '2025-09-29', '2025-10-07', 2, '678', '', 'Inclusive', '', NULL, '2025-10-07 10:00:15', '2025-10-07 10:00:15', 0.00),
+(20, 'SI/25-26/0007', '2025-10-05', '2025-10-15', 4, '5674', '', 'Inclusive', '', NULL, '2025-10-15 07:27:27', '2025-10-15 07:27:27', 0.00),
+(21, 'SI/25-26/0008', '2025-10-01', '2025-10-05', 5, '576', '', 'Inclusive', '', NULL, '2025-10-15 09:54:30', '2025-10-15 09:54:30', 611.00);
 
 -- --------------------------------------------------------
 
@@ -531,14 +498,11 @@ CREATE TABLE `sales_invoice_items` (
 INSERT INTO `sales_invoice_items` (`sii_id`, `si_id`, `category`, `product_name`, `quantity`, `rate`, `discount`, `gst`, `line_total`, `tax_mode`) VALUES
 (2, 2, 'Furnitures', 'wood bed', 1, 25000.00, 5.00, 14.95, 23750.00, 'Inclusive'),
 (7, 7, 'Stationery', 'Pen', 1, 50.00, 5.00, 10.00, 47.50, 'Inclusive'),
-(8, 8, 'Grocery', 'Milk', 1, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(9, 9, 'Stationery', 'Book', 1, 30.00, 5.00, 5.00, 28.50, 'Inclusive'),
-(10, 11, 'Electronics', 'DEll', 1, 50000.00, 10.00, 18.00, 45000.00, 'Inclusive'),
-(11, 12, 'Grocery', 'Milk', 1, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(12, 13, 'Furnitures', 'wood bed', 1, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
-(13, 14, 'Grocery', 'Milk', 1, 20.00, 5.00, 5.00, 19.00, 'Inclusive'),
-(15, 17, 'Furnitures', 'wood bed', 1, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
-(17, 19, 'Electronics', 'DEll', 5, 50000.00, 10.00, 18.00, 225000.00, 'Inclusive');
+(18, 20, 'Dress', 'Chudi', 2, 800.00, 2.00, 5.00, 1568.00, 'Inclusive'),
+(19, 20, 'Furnitures', 'wood bed', 1, 25000.00, 15.00, 14.95, 21250.00, 'Inclusive'),
+(20, 20, 'Fruits', 'Apple', 15, 300.00, 2.00, 5.00, 4410.00, 'Inclusive'),
+(21, 21, 'Fruits', 'orange', 1, 100.00, 2.00, 5.00, 98.00, 'Inclusive'),
+(22, 21, 'Stationery', 'Book', 18, 30.00, 5.00, 5.00, 513.00, 'Inclusive');
 
 -- --------------------------------------------------------
 
@@ -555,17 +519,20 @@ CREATE TABLE `sales_orders` (
   `customer_bill_no` varchar(255) DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `tax_mode` varchar(20) DEFAULT NULL,
-  `terms` text DEFAULT NULL
+  `terms` text DEFAULT NULL,
+  `grand_total` decimal(12,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sales_orders`
 --
 
-INSERT INTO `sales_orders` (`so_id`, `so_number`, `so_date`, `customer_id`, `delivery_date`, `customer_bill_no`, `notes`, `tax_mode`, `terms`) VALUES
-(13, 'SO/25-26/0001', '2025-09-01', 1, '2025-09-25', 'ORG/25-26/01', '', 'Inclusive', ''),
-(18, 'SO/25-26/0006', '2025-09-29', 2, '2025-10-01', 'ORG/009', '', 'Inclusive', ''),
-(19, 'SO/25-26/0007', '2025-10-05', 1, '2025-10-07', NULL, '', 'Inclusive', '');
+INSERT INTO `sales_orders` (`so_id`, `so_number`, `so_date`, `customer_id`, `delivery_date`, `customer_bill_no`, `notes`, `tax_mode`, `terms`, `grand_total`) VALUES
+(13, 'SO/25-26/0001', '2025-09-01', 1, '2025-09-25', 'ORG/25-26/01', '', 'Inclusive', '', 0.00),
+(18, 'SO/25-26/0006', '2025-09-29', 2, '2025-10-01', 'ORG/009', '', 'Inclusive', '', 0.00),
+(19, 'SO/25-26/0007', '2025-10-05', 1, '2025-10-07', NULL, '', 'Inclusive', '', 0.00),
+(20, 'SO/25-26/0008', '2025-09-30', 13, '2025-10-04', NULL, '', 'Inclusive', '', 87500.00),
+(22, 'SO/25-26/0009', '2025-10-01', 5, '2025-10-05', NULL, '', 'Inclusive', '', 45000.00);
 
 -- --------------------------------------------------------
 
@@ -593,7 +560,10 @@ CREATE TABLE `sales_order_items` (
 INSERT INTO `sales_order_items` (`item_id`, `so_id`, `quantity`, `rate`, `discount`, `gst`, `line_total`, `tax_mode`, `category`, `product_name`) VALUES
 (6, 13, 1.00, 25000.00, 5.00, 14.95, 23750.00, 'Inclusive', 'Furnitures', 'wood bed'),
 (10, 18, 20.00, 5.00, 2.00, 2.00, 98.00, 'Inclusive', 'Stationery', 'Pencil'),
-(11, 19, 5.00, 50000.00, 10.00, 18.00, 225000.00, 'Inclusive', 'Electronics', 'DEll');
+(11, 19, 5.00, 50000.00, 10.00, 18.00, 225000.00, 'Inclusive', 'Electronics', 'DEll'),
+(12, 20, 1.00, 50000.00, 10.00, 18.00, 45000.00, 'Inclusive', 'Electronics', 'DEll'),
+(13, 20, 2.00, 25000.00, 15.00, 14.95, 42500.00, 'Inclusive', 'Furnitures', 'wood bed'),
+(14, 22, 1.00, 50000.00, 10.00, 18.00, 45000.00, 'Inclusive', 'Electronics', 'DEll');
 
 -- --------------------------------------------------------
 
@@ -921,25 +891,25 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `purchase_invoices`
 --
 ALTER TABLE `purchase_invoices`
-  MODIFY `pi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `pi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `purchase_invoice_items`
 --
 ALTER TABLE `purchase_invoice_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
-  MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `purchase_order_items`
 --
 ALTER TABLE `purchase_order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `purchase_returns`
@@ -957,25 +927,25 @@ ALTER TABLE `purchase_return_items`
 -- AUTO_INCREMENT for table `sales_invoices`
 --
 ALTER TABLE `sales_invoices`
-  MODIFY `si_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `si_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `sales_invoice_items`
 --
 ALTER TABLE `sales_invoice_items`
-  MODIFY `sii_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `sii_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `sales_orders`
 --
 ALTER TABLE `sales_orders`
-  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `sales_order_items`
 --
 ALTER TABLE `sales_order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `sales_returns`
