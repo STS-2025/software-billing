@@ -79,8 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Update stock
                 $updateStock = $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_name = ?");
                 $updateStock->execute([$qty, $prod]);
+                
+                // Add to grand total
+                $grandTotal += $line_total;
             }
         }
+        
+        // Update sales_invoices with grand total
+        $updateTotal = $pdo->prepare("UPDATE sales_invoices SET grand_total = ? WHERE si_id = ?");
+        $updateTotal->execute([$grandTotal, $si_id]);
+
 
         $pdo->commit();
         $message = "Sales Saved Successfully!";

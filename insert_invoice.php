@@ -75,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         $pi_id = $pdo->lastInsertId();
+         $grandTotal = 0; // initialize
 
         if (!empty($_POST['product_name'])) {
             foreach ($_POST['product_name'] as $i => $prod) {
@@ -107,12 +108,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_name = ?")
                     ->execute([$qty, $prod]);
+                    // Add to grand total
+                $grandTotal += $line_total;
             }
         }
+        // Step 3: Update invoice grand total
+        $updateTotal = $pdo->prepare("UPDATE purchase_invoices SET grand_total = ? WHERE pi_id = ?");
+        $updateTotal->execute([$grandTotal, $pi_id]);
+
 
         $pdo->commit();
         $pi_number = generatePINumber($pdo);
-
+$message = "Purchase Invoice saved successfully!";
     } catch (Exception $e) {
         $pdo->rollBack();
         $message = "Error: " . $e->getMessage();

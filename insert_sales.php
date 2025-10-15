@@ -88,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['terms']
         ]);
         $so_id = $pdo->lastInsertId();
+        $grandTotal = 0;
 
         // Insert Items
         if (!empty($_POST['product_name'])) {
@@ -124,8 +125,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Update stock (reduce quantity)
                 $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_name = ?")
                     ->execute([$qty, $prod]);
+                    // Add to grand total
+                $grandTotal += $line_total;
             }
         }
+        // Update the sales order with grand total
+        $updateTotal = $pdo->prepare("UPDATE sales_orders SET grand_total = ? WHERE so_id = ?");
+        $updateTotal->execute([$grandTotal, $so_id]);
+
 
         $pdo->commit();
 
