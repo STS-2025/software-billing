@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-$title = "Sales Invoices";
+$title = "Sales Invoices list";
 include 'header.php';
 
 // --- Handle search/filter ---
@@ -54,8 +54,10 @@ $customers = $pdo->query("SELECT customer_id, customer_name FROM customers ORDER
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sales Invoices</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Sales Invoices list</title>
+ 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> 
+<link href="../print1.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
 
@@ -125,29 +127,48 @@ $customers = $pdo->query("SELECT customer_id, customer_name FROM customers ORDER
 </table>
 
 <!-- Hidden Print Area -->
-<div id="printArea" style="display:none; margin-top:30px;"></div>
+<div id="printArea" style="display:none; "></div>              <!--  margin-top:30px; -->
 
 <script>
-function showPrint(si_id){
-    fetch('sales_invoice_print.php?id=' + si_id)
-    .then(response => response.text())
-    .then(html => {
-        let printArea = document.getElementById('printArea');
-        printArea.innerHTML = html;
-        printArea.style.display = 'block';
-        printDiv('printArea');
-    })
-    .catch(err => console.error(err));
+
+function printDiv(htmlContent) {
+    
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.id = 'printIframe';
+    
+   
+    document.body.appendChild(iframe);
+    
+    var frameWindow = iframe.contentWindow;
+    
+    
+    frameWindow.document.open();
+    frameWindow.document.write(htmlContent);
+    frameWindow.document.close();
+    
+  
+    frameWindow.focus();
+    frameWindow.print();
+    
+   
+    setTimeout(function() {
+        document.body.removeChild(iframe);
+    }, 1000);
+    
+  
 }
 
-function printDiv(divId) {
-    var printContents = document.getElementById(divId).innerHTML;
-    var originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-    location.reload();
+
+function showPrint(si_id){
+    fetch('sampleprint2.php?id=' + si_id)
+    .then(response => response.text())
+    .then(html => {
+        
+        printDiv(html); 
+    })
+    .catch(err => console.error(err));
 }
 </script>
 
