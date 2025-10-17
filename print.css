@@ -105,19 +105,21 @@
         border: 1px solid #000 !important; 
         padding: 5px 8px !important;
         text-align: left !important;
+        border-right:1px solid #000 !important;
+        border-left:1px solid #000 !important;
     }
     body .item-table th {
         background-color: #f0f0f0 !important; 
         font-weight: bold !important;
     }
  /* 💡 FIX for Missing Right Border */
-/* Remove border-right ONLY from the second-to-last column (Discount/GST Amount) */
-body .item-table tbody tr td:nth-child(7) {
+/* Remove border-right ONLY from the second-to-last column (Discount/GST Amount) 
+body .item-table tbody tr td:nth-child(8) {
     border-right: none !important;
 }
 /* Re-enable the generic border on the last column (LineTotal) so it completes the box */
 body .item-table tbody tr td:last-child {
-    border-right: 1px solid #000 !important; 
+    border-right: 1px solid #000 !important;
 }
 
 
