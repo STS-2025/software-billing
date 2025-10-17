@@ -1,4 +1,5 @@
 <?php
+ob_start(); // <-- ADD THIS LINE
 require_once 'config.php';
 $title = "New Sales Invoice";
 include 'header.php';
@@ -32,7 +33,9 @@ $message = "";
 
 // --- Handle form submission ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
     try {
+
         $pdo->beginTransaction();
         $so_id = !empty($_POST['so_id']) ? intval($_POST['so_id']) : NULL;
 
@@ -57,11 +60,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $gst = floatval($_POST['gst'][$i]);
                 $tax_mode = $_POST['tax_mode'];
 
-                // Check stock
-                $stockCheck = $pdo->prepare("SELECT stock_quantity FROM products WHERE product_name = ?");
-                $stockCheck->execute([$prod]);
-                $currentStock = $stockCheck->fetchColumn();
-                if ($currentStock < $qty) throw new Exception("Not enough stock for product: $prod (Available: $currentStock)");
+               // --- NEW TRANSACTION-BASED STOCK CHECK ---
+include 'currentstock.php';
+$qty = floatval($_POST['quantity'][$i]);
+$today = date('Y-m-d', strtotime('+1 day'));
+// 1. Call the transaction-based function (which is the renamed get_opening_stock)
+$currentStock = get_opening_stock($pdo, $prod, $today); 
+
+// 2. Clamping: Ensure negative stock is treated as 0 (You cannot sell what you don't have)
+$availableStock = max(0, $currentStock); 
+
+// 3. Validation Check
+if ($availableStock < $qty) {
+    throw new Exception("Not enough stock for product: $prod (Available: $availableStock)");
+}
 
                 // Line total calculation
                 $line_total = $qty * $rate;
@@ -76,9 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $si_id, $_POST['category'][$i], $prod, $qty, $rate, $disc, $gst, $line_total, $tax_mode
                 ]);
 
-                // Update stock
+                /* Update stock
                 $updateStock = $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_name = ?");
-                $updateStock->execute([$qty, $prod]);
+                $updateStock->execute([$qty, $prod]);*/
                 
                 // Add to grand total
                 $grandTotal += $line_total;
@@ -91,11 +103,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         $pdo->commit();
-        $message = "Sales Saved Successfully!";
+        ob_clean(); // <-- ADD THIS LINE: Clears all collected HTML/text
+        // **SUCCESS RESPONSE**
+        echo json_encode(['success' => true, 'message' => "Sales Saved Successfully!"]);
+        exit(); // Exit the script after returning JSON
+        //$message = "Sales Saved Successfully!";
         $si_number = generateSINumber($pdo); // refresh SI number
     } catch (Exception $e) {
         $pdo->rollBack();
-        $message = "Error: " . $e->getMessage();
+       // $message = "Error: " . $e->getMessage();
+       ob_clean(); // <-- ADD THIS LINE: Clears all collected HTML/text
+       // **ERROR RESPONSE**
+        echo json_encode(['success' => false, 'message' => "Error: " . $e->getMessage()]);
+        exit();
     }
 }
 ?>
@@ -291,11 +311,12 @@ function fillProductDetails(el){
         row.querySelector('input[name="rate[]"]').value = p.rate || 0;
         row.querySelector('input[name="discount[]"]').value = p.discount || 0;
         row.querySelector('input[name="gst[]"]').value = p.gst || 0;
-        s.textContent = "Stock: " + (p.stock_quantity || 0);
-        row.dataset.stock = p.stock_quantity || 0;
+       // s.textContent = "Stock: " + (p.stock_quantity || 0);
+       // row.dataset.stock = p.stock_quantity || 0;
     } else { s.textContent = ""; row.dataset.stock = 0; }
     updateLineTotal(row.querySelector('input[name="quantity[]"]'));
 }
+
 
 function checkStock(el){
     let row = el.closest('tr');
@@ -340,7 +361,7 @@ function calculateGrandTotal(){
     document.getElementById('grandTotal').value=total.toFixed(2);
 }
 
-// AJAX form submit to update stock immediately
+/* AJAX form submit to update stock immediately
 document.getElementById("invoiceForm").addEventListener("submit", function(e){
     e.preventDefault(); // prevent normal submit
 
@@ -390,6 +411,79 @@ document.getElementById("invoiceForm").addEventListener("submit", function(e){
         form.reset(); // reset form for next invoice
     })
     .catch(err => console.error(err));
+});*/
+// AJAX form submit to update stock immediately
+document.getElementById("invoiceForm").addEventListener("submit", function(e){
+    e.preventDefault(); // prevent normal submit
+
+    const form = this;
+    const formData = new FormData(form);
+    const msgBox = document.getElementById('saveMessage');
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return res.json(); // Read the JSON response from PHP
+    })
+    .then(data => {
+        msgBox.style.display = 'block';
+        
+        if (data.success) {
+            msgBox.className = 'alert alert-success';
+            msgBox.textContent = data.message;
+            
+            // --- ONLY RUN SUCCESS ACTIONS ON PHP SUCCESS ---
+            
+            // Update stock-info for each product row (if needed)
+            document.querySelectorAll('#itemsTable tbody tr').forEach(row => {
+                const productName = row.querySelector('select[name="product_name[]"]').value;
+                const stockInfo = row.querySelector('.stock-info');
+                const product = products.find(p => p.product_name === productName);
+
+                if(product){
+                    const qty = parseFloat(row.querySelector('input[name="quantity[]"]').value) || 0;
+                    // Subtract sold quantity from stock
+                  //  product.stock_quantity = (parseFloat(product.stock_quantity) || 0) - qty;
+                   // stockInfo.textContent = "Stock: " + product.stock_quantity;
+                    stockInfo.style.color = (product.stock_quantity <= 0) ? "red" : "#6c757d";
+                    row.querySelector('input[name="quantity[]"]').setAttribute('data-stock', product.stock_quantity);
+                }
+            });
+
+            // Recalculate totals
+            updateAllLineTotals();
+
+            // Generate new SI number for next invoice
+            fetch(window.location.href)
+                .then(res => res.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newSINumber = doc.querySelector('input[name="si_number"]').value;
+                    document.querySelector('input[name="si_number"]').value = newSINumber;
+                });
+
+            form.reset(); // reset form for next invoice
+            
+        } else {
+            // --- HANDLE ERROR FROM PHP TRANSACTION ROLLBACK ---
+            msgBox.className = 'alert alert-danger';
+            msgBox.textContent = data.message; // Displays "Error: Not enough stock for product..."
+        }
+    })
+    .catch(err => {
+        // Handle network errors or non-JSON responses
+        const msgBox = document.getElementById('saveMessage');
+        msgBox.style.display = 'block';
+        msgBox.className = 'alert alert-danger';
+        msgBox.textContent = "An unknown error occurred. Check the browser console.";
+        console.error("Fetch Error:", err);
+    });
 });
 document.querySelector("select[name='so_id']").addEventListener("change", function(){
     const so_id = this.value;
@@ -439,7 +533,7 @@ document.querySelector("select[name='so_id']").addEventListener("change", functi
                 const stockInfo = row.querySelector(".stock-info");
                 const product = products.find(p => p.product_name === item.product_name);
                 if(product){
-                    stockInfo.textContent = "Stock: " + product.stock_quantity;
+                   // stockInfo.textContent = "Stock: " + product.stock_quantity;
                     row.querySelector("input[name='quantity[]']").setAttribute('data-stock', product.stock_quantity);
                 }
 

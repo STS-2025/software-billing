@@ -97,7 +97,8 @@
         width: 100% !important;
         border-collapse: collapse !important; 
         margin-bottom: 15px !important; 
-        border: 1px solid #000 !important; /* Outer border */
+        /* border: 1px solid #000 !important; Outer border */
+        /* border: 1px solid #000 !important; */
     }
     body .item-table th, body .item-table td {
        display: table-cell !important;  /*Fixes horizontal header/cell issue */
@@ -109,10 +110,16 @@
         background-color: #f0f0f0 !important; 
         font-weight: bold !important;
     }
-    body .item-table tbody tr td:nth-child(7), 
-    body .item-table tbody tr td:nth-child(8) {
-        border-right: none !important;
-    }
+ /* 💡 FIX for Missing Right Border */
+/* Remove border-right ONLY from the second-to-last column (Discount/GST Amount) */
+body .item-table tbody tr td:nth-child(7) {
+    border-right: none !important;
+}
+/* Re-enable the generic border on the last column (LineTotal) so it completes the box */
+body .item-table tbody tr td:last-child {
+    border-right: 1px solid #000 !important; 
+}
+
 
     /* Column widths and text alignment */
     body .col-sno { width: 5% !important; }

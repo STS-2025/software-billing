@@ -122,10 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $tax_mode
                 ]);
 
-                // Update stock (reduce quantity)
+                /* Update stock (reduce quantity)
                 $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_name = ?")
                     ->execute([$qty, $prod]);
-                    // Add to grand total
+                    // Add to grand total*/
                 $grandTotal += $line_total;
             }
         }

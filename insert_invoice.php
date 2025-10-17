@@ -106,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $tax_mode
                 ]);
 
-                $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_name = ?")
-                    ->execute([$qty, $prod]);
+               /* $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_name = ?")
+                    ->execute([$qty, $prod]);*/
                     // Add to grand total
                 $grandTotal += $line_total;
             }

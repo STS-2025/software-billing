@@ -115,20 +115,19 @@ $amount_in_words = numberToWords($grand_total);
     <!-- <link rel="stylesheet" href="screen.css" media="screen"> -->
     <?php
    
-    $css_relative_path = '/print.css'; 
-   
+   // Dynamically get the current directory URL (e.g., http://yourdomain.com/path/to/app/)
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
     $host = $_SERVER['HTTP_HOST'];
-    $path = dirname($_SERVER['PHP_SELF']) . '/' . $css_relative_path;
+    $path = dirname($_SERVER['PHP_SELF']) . '/';
     
-    // Clean up the path (removes /../, cleans multiple slashes)
-    $clean_path = str_replace(['//', ':/'], ['/', '://'], $path);
-    
-    $full_css_url = $protocol . "://" . $host . $clean_path;
-    
-    // Output the link tag using the full, absolute URL
-    echo '<link rel="stylesheet" href="' . $full_css_url . '">';
+    // Clean up the path
+    $base_url = $protocol . "://" . $host . str_replace(['//', ':/'], ['/', '://'], $path);
     ?>
+
+    <base href="<?php echo htmlspecialchars($base_url); ?>">
+    
+    <link rel="stylesheet" href="print.css">
+    
   
     
 </head>
@@ -209,9 +208,9 @@ $amount_in_words = numberToWords($grand_total);
                 <td class="text-right"><?php echo number_format($item['line_total'], 2); ?></td>
             </tr>
             <?php endforeach; ?>
-        </tbody>
+        
                 
-                <tr><td colspan="7" class="empty-row"></td></tr>
+                <!-- <tr><td colspan="7" class="empty-row"></td></tr> -->
             </tbody>
         </table>
     </section>
@@ -226,7 +225,7 @@ $amount_in_words = numberToWords($grand_total);
             </table>
         </div>
         
-        <p class="amount-in-words"><strong>Amount Chargeable (in words): </strong><?php echo $amount_in_words; ?>**</p>
+        <p class="amount-in-words"><strong>Amount Chargeable (in words): </strong><?php echo $amount_in_words; ?></p>
     </section>
 
     <footer>
