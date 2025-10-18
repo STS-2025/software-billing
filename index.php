@@ -117,7 +117,7 @@ if (isset($_GET['logout'])) {
 <style>
 /* ===== Keep all your existing CSS ===== */
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
-body { display:flex; justify-content:center; align-items:center; height:100vh; background-color:#140d77; }
+body { display:flex; justify-content:center; align-items:center; height:100vh; background-color:#e6e6e6; } /*#28e6fc*/
 .container { width:800px; height:500px; background:#fff; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); display:flex; overflow:hidden; }
 .left { flex:1; background:#140d77; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#fff; }
 .left h1 { font-size:40px; margin-bottom:10px; }
@@ -135,6 +135,17 @@ button.submit:hover { background:#0e085c; }
 a { color:#140d77; text-decoration:none; }
 a:hover { text-decoration:underline; }
 .dashboard { text-align:center; }
+.login-logo-container {
+    width: 100px;
+    height: 100px;
+    margin: 20px auto; /* Center the container */
+    border-radius:50%;
+    /* The CSS that 'fixes' the logo appearance */
+    background-image: url('Sts_Logo.ico');
+    background-repeat: no-repeat;
+    background-size: contain; /* Scales to fit without cropping */
+    background-position: center; /* Centers the image inside the div */
+}
 </style>
 <script>
 function showForm(type){
@@ -156,6 +167,7 @@ function showForm(type){
 <?php else: ?>
   <div class="container">
     <div class="left">
+      <div class="login-logo-container"></div>
       <h1>Welcome!</h1>
       <p>Register first, then login to continue</p>
       <button onclick="showForm('login')">Login</button>
