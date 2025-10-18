@@ -194,6 +194,81 @@ $title = isset($title) ? $title : "Dashboard";
   font-size: 1.1rem;
 }
 }
+@media (min-width: 992px) {
+    /* --- DEFAULT EXPANDED STATE (250px) --- */
+    #sidebar {
+        width: 250px; 
+        transition: width 0.3s ease;
+        overflow-x: hidden;
+    }
+    #main-content {
+        margin-left: 250px;
+        transition: margin-left 0.3s ease;
+    }
+
+    /* 1. Header (.logo) Default State */
+    #sidebar .logo {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        padding: 20px 15px;
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+
+    /* 2. Menu Link/Item Default State (Use flex on the link) */
+    #sidebar ul.nav > li > a {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        transition: padding 0.3s ease;
+    }
+
+    /* 3. Menu Text (The element we control for the collapse) */
+    #sidebar .menu-text {
+        opacity: 1;
+        width: 170px; /* Space the text occupies */
+        overflow: hidden;
+        transition: opacity 0.3s ease, width 0.3s ease;
+    }
+
+
+    /* --- COLLAPSED STATE (80px) --- */
+    #sidebar.collapsed {
+        width: 80px; 
+    }
+    #main-content.sidebar-collapsed { 
+        margin-left: 80px;
+    }
+
+    /* 1. Header (.logo) Collapsed Fix */
+    #sidebar.collapsed .logo {
+        justify-content: center;
+        font-size: 0; /* Hide all text content */
+        opacity: 0; /* Hide all text content smoothly */
+        padding-left: 0;
+        padding-right: 0;
+    }
+    #sidebar.collapsed .logo i {
+        font-size: 1.25rem; /* Restore icon size */
+        opacity: 1; /* Restore icon visibility */
+        margin-right: 0 !important; /* Remove bootstrap spacing */
+    }
+
+    /* 2. Menu Link/Item Collapsed Fix */
+    #sidebar.collapsed ul.nav > li > a {
+        justify-content: center; /* Centers the remaining icon */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* 3. Menu Text Collapsed Fix */
+    #sidebar.collapsed .menu-text {
+        width: 0; /* Shrink space smoothly */
+        opacity: 0; /* Fade out smoothly */
+        pointer-events: none;
+    }
+}
   </style>
 </head>
 
@@ -202,84 +277,84 @@ $title = isset($title) ? $title : "Dashboard";
 <button class="toggle-btn" id="menuToggle"><i class="fa fa-bars"></i></button>
 
 <div class="app-sidebar" id="sidebar">
-  <div class="logo"><i class="fa-solid fa-layer-group me-2"></i> Menu</div>
+  <div class="logo"><i class="fa-solid fa-layer-group me-2"></i><span class="menu-text"> Menu</span></div>
   <ul class="nav flex-column">
 
-    <li><a href="dashboard.php" class="nav-link"><i class="fa fa-home"></i> Dashboard</a></li>
+    <li><a href="dashboard.php" class="nav-link"><i class="fa fa-home"></i><span class="menu-text"> Dashboard</span></a></li>
 
     <!-- Master -->
     <li>
       <a href="#masterMenu" class="nav-link d-flex align-items-center" data-bs-toggle="collapse">
-        <i class="fa fa-database"></i> Master <i class="fa fa-chevron-right rotate-icon"></i>
+        <i class="fa fa-database"></i><span class="menu-text"> Master </span><span><i class="fa fa-chevron-right rotate-icon"></i></span> 
       </a>
       <ul class="collapse submenu" id="masterMenu">
-          <li><a href="category.php" class="nav-link"><i class="fa fa-tags me-2"></i> Category</a></li>
-    <li><a href="products.php" class="nav-link"><i class="fa fa-box-open me-2"></i> Products</a></li>
-    <li><a href="customer.php" class="nav-link"><i class="fa fa-user-friends me-2"></i> Customer</a></li>
-    <li><a href="insert_supplier.php" class="nav-link"><i class="fa fa-truck me-2"></i> Supplier</a></li>
-    <li><a href="ledger.php" class="nav-link"><i class="fa fa-book me-2"></i> Ledger</a></li>
+          <li><a href="category.php" class="nav-link"><i class="fa fa-tags me-2"></i><span class="menu-text"> Category</span></a></li>
+    <li><a href="products.php" class="nav-link"><i class="fa fa-box-open me-2"></i><span class="menu-text"> Products</span></a></li>
+    <li><a href="customer.php" class="nav-link"><i class="fa fa-user-friends me-2"></i><span class="menu-text"> Customer</span></a></li>
+    <li><a href="insert_supplier.php" class="nav-link"><i class="fa fa-truck me-2"></i><span class="menu-text"> Supplier</span></a></li>
+    <li><a href="ledger.php" class="nav-link"><i class="fa fa-book me-2"></i><span class="menu-text"> Ledger</span></a></li>
       </ul>
     </li>
 
     <!-- Transaction -->
     <li>
       <a href="#transactionMenu" class="nav-link d-flex align-items-center" data-bs-toggle="collapse">
-        <i class="fa fa-random"></i> Transaction <i class="fa fa-chevron-right rotate-icon"></i>
+        <i class="fa fa-random"></i><span class="menu-text"> Transaction </span><span> <i class="fa fa-chevron-right rotate-icon"></i></span> 
       </a>
       <ul class="collapse submenu" id="transactionMenu">
 
         <!-- Purchase -->
         <li>
           <a href="#purchaseMenu" class="nav-link d-flex align-items-center" data-bs-toggle="collapse">
-            <i class="fa fa-shopping-cart"></i> Purchase <i class="fa fa-chevron-right rotate-icon"></i>
+            <i class="fa fa-shopping-cart"></i><span class="menu-text"> Purchase </span><span><i class="fa fa-chevron-right rotate-icon"></i></span>
           </a>
           <ul class="collapse submenu" id="purchaseMenu">
-            <li><a href="purchase_list.php" class="nav-link"><i class="fa fa-shopping-cart me-2"></i> Purchase Order</a></li>
-<li><a href="purchase_invoice_list.php" class="nav-link"><i class="fa fa-file-invoice me-2"></i> Purchase Invoice</a></li>
-<li><a href="purchase_return_list.php" class="nav-link"><i class="fa fa-undo me-2"></i> Purchase Return</a></li>
+            <li><a href="purchase_list.php" class="nav-link"><i class="fa fa-shopping-cart me-2"></i><span class="menu-text"> Purchase Order</span></a></li>
+<li><a href="purchase_invoice_list.php" class="nav-link"><i class="fa fa-file-invoice me-2"></i><span class="menu-text"> Purchase Invoice</span></a></li>
+<li><a href="purchase_return_list.php" class="nav-link"><i class="fa fa-undo me-2"></i><span class="menu-text"> Purchase Return</span></a></li>
           </ul>
         </li>
 
         <!-- Sales -->
         <li>
           <a href="#salesMenu" class="nav-link d-flex align-items-center" data-bs-toggle="collapse">
-            <i class="fa fa-cash-register"></i> Sales <i class="fa fa-chevron-right rotate-icon"></i>
+            <i class="fa fa-cash-register"></i><span class="menu-text"> Sales </span><span><i class="fa fa-chevron-right rotate-icon"></i></span>
           </a>
           <ul class="collapse submenu" id="salesMenu">
-           <li><a href="sales_list.php" class="nav-link"><i class="fa fa-shopping-bag me-2"></i> Sales Order</a></li>
-<li><a href="sales_invoice_list.php" class="nav-link"><i class="fa fa-file-invoice me-2"></i> Sales Invoice</a></li>
-<li><a href="sales_return_list.php" class="nav-link"><i class="fa fa-undo me-2"></i> Sales Return</a></li>
+           <li><a href="sales_list.php" class="nav-link"><i class="fa fa-shopping-bag me-2"></i><span class="menu-text"> Sales Order</span></a></li>
+<li><a href="sales_invoice_list.php" class="nav-link"><i class="fa fa-file-invoice me-2"></i><span class="menu-text"> Sales Invoice</span></a></li>
+<li><a href="sales_return_list.php" class="nav-link"><i class="fa fa-undo me-2"></i><span class="menu-text"> Sales Return</span></a></li>
           </ul>
         </li>
 
-        <li><a href="payment_out_list.php" class="nav-link"><i class="fa fa-wallet"></i> Payment Out</a></li>
-        <li><a href="payment_in_list.php" class="nav-link"><i class="fa fa-money-bill"></i> Payment In</a></li>
+        <li><a href="payment_out_list.php" class="nav-link"><i class="fa fa-wallet"></i><span class="menu-text"> Payment Out</span></a></li>
+        <li><a href="payment_in_list.php" class="nav-link"><i class="fa fa-money-bill"></i><span class="menu-text"> Payment In</span></a></li>
       </ul>
     </li>
 
     <!-- Reports -->
     <li>
       <a href="#reportsMenu" class="nav-link d-flex align-items-center" data-bs-toggle="collapse">
-        <i class="fa fa-chart-line"></i> Reports <i class="fa fa-chevron-right rotate-icon"></i>
+        <i class="fa fa-chart-line"></i><span class="menu-text"> Reports </span><span><i class="fa fa-chevron-right rotate-icon"></i></span>
       </a>
       <ul class="collapse submenu" id="reportsMenu">
-      <li><a href="stock_summary.php" class="nav-link"><i class="fa fa-warehouse me-2"></i> Stock Summary</a></li>
-<li><a href="sales_summary.php" class="nav-link"><i class="fa fa-chart-line me-2"></i> Sales Summary</a></li>
+      <li><a href="stock_summary.php" class="nav-link"><i class="fa fa-warehouse me-2"></i><span class="menu-text"> Stock Summary</span></a></li>
+<li><a href="sales_summary.php" class="nav-link"><i class="fa fa-chart-line me-2"></i><span class="menu-text"> Sales Summary</span></a></li>
       </ul>
     </li>
 
-    <li><a href="profile.php" class="nav-link"><i class="fa fa-user"></i> Profile</a></li>
+    <li><a href="profile.php" class="nav-link"><i class="fa fa-user"></i><span class="menu-text"> Profile</span></a></li>
     
       <!-- Only show Users menu for Admin -->
 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
-  <li><a href="admin_list.php" class="nav-link"><i class="fa fa-users"></i> Users</a></li>
+  <li><a href="admin_list.php" class="nav-link"><i class="fa fa-users"></i><span class="menu-text"> Users</span></a></li>
 <?php endif; ?>
 
-    <li><a href="logout.php" class="nav-link "><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+    <li><a href="logout.php" class="nav-link "><i class="fa fa-sign-out-alt"></i><span class="menu-text"> Logout</span></a></li>
   </ul>
 </div>
 
-<div class="main-content">
+<div class="main-content" id="main-content">
   <!-- Topbar / Header -->
 <div class="topbar shadow-sm bg-white d-flex justify-content-between align-items-center px-4 py-3 mb-4" style="border-bottom: 1px solid #eee;">
     <!-- Left: Welcome -->
@@ -313,8 +388,23 @@ $title = isset($title) ? $title : "Dashboard";
       let bsCollapse = new bootstrap.Collapse(parentCollapse, { toggle: true });
       link.classList.add('active');
     }
-    
-  });
+});
+ 
+ document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar'); 
+    const mainContent = document.getElementById('main-content'); // Get main content too
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            // Toggles the 'collapsed' class on the sidebar
+            sidebar.classList.toggle('collapsed');
+            
+            // Toggles a corresponding class on the main content to shift it
+            mainContent.classList.toggle('sidebar-collapsed'); 
+        });
+    }
+});
 </script>
 </body>
 </html>
