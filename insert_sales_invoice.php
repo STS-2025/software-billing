@@ -33,6 +33,21 @@ $message = "";
 
 // --- Handle form submission ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ⚠️ CRITICAL VALIDATION CHECK
+    if (empty($_POST['si_date']) || trim($_POST['si_date']) === '') {
+        ob_clean(); // Clear buffer if using Method 3
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => "Error: Please enter the Invoice Date."]);
+        exit(); // Stop execution immediately
+    }
+    
+    // Repeat for other critical fields if needed (e.g., customer_id)
+    if (empty($_POST['customer_id']) || !is_numeric($_POST['customer_id'])) {
+        ob_clean(); // Clear buffer if using Method 3
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => "Error: Please select a Customer."]);
+        exit(); // Stop execution immediately
+    }
     header('Content-Type: application/json');
     try {
 
