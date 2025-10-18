@@ -231,11 +231,11 @@ $amount_in_words = numberToWords($grand_total);
     
    
 body .item-table {
-    width: 100% !important;
+    width: 99.5% !important;
     /* border-collapse: collapse !important; */
     margin-bottom: 15px !important;
      table-layout: fixed !important; 
-     border-collapse: separate !important; /* ✅ Use separate instead of collapse */
+     border-collapse: collapse !important; /* ✅ Use separate instead of collapse */
     border-spacing: 0 !important;  
 }
 
@@ -256,8 +256,8 @@ body .item-table td {
     body .col-hsn { width: 10% !important; }
     body .col-qty, body .col-unit { width: 8% !important; }
     body .col-price, body .col-amount { width: 12% !important; text-align: right !important; }
-    body .col-gst-amount { width: 10% !important; } 
-    body .col-linetotal { width: 12% !important; } 
+    body .col-gst-amount { width: 15% !important; } 
+    body .col-linetotal { width: 15% !important; } 
     body .col-item { width: 20% !important; } 
     body .text-right { text-align: right !important; }
 
@@ -278,15 +278,16 @@ body .item-table td {
     }
     body .summary-totals {
         width: 35% !important;
-        border: 1px solid #000 !important;
+        /* border: 1px solid #000 !important; */
         margin-bottom: 10px !important;
-         border-collapse: separate !important; 
+         border-collapse: collapse !important; 
            table-layout: fixed !important; 
+        
     }
     body .total-table {
-        width: 100% !important;
-        border-collapse: separate !important;
-        border: 1px solid #000 !important;
+        width: 98% !important;
+         border-collapse: collapse !important; 
+        border: 1px solid #000 !important; 
     }
     body .total-table td {
         padding: 4px 8px !important;
